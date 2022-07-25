@@ -1,6 +1,6 @@
 # 2FA Code Generation: 8 Hex Digits (~4 billion numbers)
 ## Requirements
-The requirements for this code are to:
+The requirements for this code are:
 1. The program should emit an 8-digit hexadecimal code when ran.
 2. The program should emit every possible code before repeating.
 3. The program should emit codes in an apparently random order.
@@ -14,8 +14,9 @@ The program will create a `numpy` binary containing the state of the program.
 
 ## Implementation
 The generator splits up the possible range of values into sections and picks
-a section at random to retrieve a code. Each section is also offset by a value
-based on a modulus of the index of the section and the number of sections.
+a section at random to retrieve a code. Each section is additionally offset
+by a value based on a modulus of the index of the section and the number of
+sections.
 
 For example:
 - Generate a number between the range of 0 to 100 and split into sections of
