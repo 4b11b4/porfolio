@@ -22,7 +22,8 @@ For example:
 - For simplicity, let's say we wanted to generate codes between 0 and 100.
 - Split into sections of size 10. The first section is from 0-9, the second
 section from 10-19, and so on.
-- To increase the apparent randomness: each section is offset by a modulus of the section index and the number of
+- To increase the apparent randomness: each section is offset by a modulus of
+the section index and the number of
 sections. In this case, our first section offset is 0 (ie: index 0 % 10), and
 our section section offset is 1 (ie: index 1 % 10). Thus our first section
 begins counting at 0 (0+0), the second at 11 (10+1), the third at 22 (20+2),
@@ -32,3 +33,7 @@ Then we simply pick a section index at random for the code to be emitted and
 then increment that section. When a section goes beyond it's range, it is
 started again at the minimum. Continuing on with this pattern, we will emit
 all values once before repeating.
+
+In the example above, the codes may not seem very random to a keen observer.
+However, when the values are in hex and there are thousands of sections, the
+codes generated appear to be much more random.
