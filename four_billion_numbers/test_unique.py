@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     # Set up test
     digits = 6  # Anton's computer can't handle 8 digits
-    gen = Generator(num_hex_digits=digits, divisor=1024*2)
+    gen = Generator(num_hex_digits=digits, num_sections=1024*2)
 
     start = timer()
     # Generate all possible codes

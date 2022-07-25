@@ -5,13 +5,13 @@ from typing import List
 
 
 class Generator:
-    def __init__(self, num_hex_digits=8, divisor=1024):
+    def __init__(self, num_hex_digits=8, num_sections=1024):
         """
         This class can generate hexadecimal codes up to a certain number of digits
         in a random order without duplication until all possible codes have been generated.
 
         :param num_hex_digits: The number of digits in the code to be generated.
-        :param divisor: The number of sections between 0 and the maximum value represented by the number of digits above.
+        :param num_sections: The number of sections between 0 and the maximum value represented by the number of digits above.
         """
         # Number of digits and the maximum value
         self.num_hex_digits = num_hex_digits
@@ -20,19 +20,20 @@ class Generator:
 
         # The maximum value is broken up into "sections".
         # eg: If the max value was 100 and the number of sections was 10, each section would have a range of 10 values.
-        self.divisor = divisor  # number of sections
+        self.num_sections = num_sections
 
-        # Check that the divisor breaks up the sections equally.
-        if (self.max_val+1) % divisor:
-            logging.error("Divisor does not divide into equal sections.")
-        # TODO check max_value > divisor (by some factor) so there is room to count in each section (eg: don't divide by half of max value)
+        # Check that the num_sections breaks up the sections equally.
+        if (self.max_val+1) % num_sections:
+            logging.error("The range of values are not divided equally into sections.")
+
+        # TODO check max_value > num_sections (by some factor) so there is room to count in each section (eg: don't divide by half of max value)
 
         # Determine the range of each section
-        self.section_range = int((self.max_val+1) / self.divisor)  # divides equally for any number of hex digits
+        self.section_range = int((self.max_val+1) / self.num_sections)  # divides equally for any number of hex digits
 
         # Filename to be used based on the number of digits and sections
-        self.filename = f"dig_{self.num_hex_digits}-div_{self.divisor}.npz"
-        logging.debug(f"{self.divisor} sections, range: {self.section_range}")
+        self.filename = f"dig_{self.num_hex_digits}-div_{self.num_sections}.npz"
+        logging.debug(f"{self.num_sections} sections, range: {self.section_range}")
 
         # Load the list of saved sections and list of section indexes to be incremented
         try:
@@ -45,11 +46,11 @@ class Generator:
         except FileNotFoundError:
             logging.warning("Previous file not found.")
             # Create section_indexes
-            self.section_indexes = np.arange(0, stop=self.divisor)
+            self.section_indexes = np.arange(0, stop=self.num_sections)
             # Create sections and their starting value
             # using for loop (more explicit and can debug)
             #temp = []
-            #for x in range(0, self.divisor):
+            #for x in range(0, self.num_sections):
             #    offset = x % self.section_range
             #    section_min = x * self.section_range
             #    val = section_min + offset
@@ -57,7 +58,7 @@ class Generator:
             #    logging.debug(f"x: {x}, m: {section_min}, o: {offset}, v: {val}")
             # Create sections and their starting value
             # using list comprehension
-            temp = [((x * self.section_range) + (x % self.section_range)) for x in range(0, self.divisor)]
+            temp = [((x * self.section_range) + (x % self.section_range)) for x in range(0, self.num_sections)]
 
             # Create numpy array from list
             self.sections = np.asarray(temp)
@@ -95,7 +96,7 @@ class Generator:
         # If used last index, generate new ones
         if len(self.section_indexes) == 1:
             logging.debug(f"Used last index #{random_remaining_index}: {section_index}")
-            self.section_indexes = np.arange(0, stop=self.divisor)
+            self.section_indexes = np.arange(0, stop=self.num_sections)
             logging.debug(f"New section indexes: {self.section_indexes}")
         # Remove used index
         else:

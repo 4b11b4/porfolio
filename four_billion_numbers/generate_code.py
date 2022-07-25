@@ -8,8 +8,8 @@ if __name__ == "__main__":
 
     # Set up test
     digits = 8
-    divisor = 1024*2  # number of sections that the max value is divided into
-    gen = Generator(num_hex_digits=digits, divisor=1024*2)
+    num_sections = 1024*2  # number of sections that the max value is divided into
+    gen = Generator(num_hex_digits=digits, num_sections=1024*2)
 
     start = timer()
     # Generate a single code
