@@ -20,8 +20,8 @@ sections.
 
 For example:
 - For simplicity, let's say we wanted to generate codes between 0 and 100.
-- Split into sections of size 10.
-- The first section is from 0-9, the second section from 10-19, and so on.
+- Split into sections of size 10. The first section is from 0-9, the second
+section from 10-19, and so on.
 - To increase the apparent randomness: each section is offset by a modulus of the section index and the number of
 sections. In this case, our first section offset is 0 (ie: index 0 % 10), and
 our section section offset is 1 (ie: index 1 % 10). Thus our first section
